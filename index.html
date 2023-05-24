@@ -80,6 +80,14 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "1aeb52a5953a4cef8caed1b1c55b78ac"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -131,22 +139,14 @@
       button.addEventListener('click', clickFunctions[button.innerText]);
     }
 
+    // try, catch, throw
     function calculate(firstNum, operator, secondNum) {
-      // Try/Catch
       try {
-        validateNumericInput(firstNum);
-        validateNumericInput(secondNum);
+        if (isNaN(firstNum) || isNaN(secondNum)) throw new ValidationError(`Invalid input: ${input}`);
         return eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (e) {
         console.error(e);
         return null;
-      }
-    }
-
-    // Throw
-    function validateNumericInput(input) {
-      if (isNaN(input)) {
-        throw new ValidationError(`Invalid input: ${input}`);
       }
     }
 
