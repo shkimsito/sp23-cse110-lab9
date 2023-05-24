@@ -11,16 +11,12 @@
     button {
       margin: 3px;
     }
-
     button:hover {
       cursor: pointer;
     }
-
-    #first-num,
-    #second-num {
+    #first-num, #second-num {
       width: 60px;
     }
-
     output {
       border: 1px solid gray;
       display: block;
@@ -29,11 +25,9 @@
       padding: 5px;
       width: 240px;
     }
-
     main {
       width: 800px;
     }
-
     #error-btns {
       column-gap: 5px;
       display: flex;
@@ -41,7 +35,6 @@
       margin-top: 30px;
       row-gap: 5px;
     }
-
     #error-btns>* {
       padding: 8px 2px;
       width: 122px;
@@ -102,6 +95,73 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    const clickFunctions = {
+      'Console Log':            () => console.log('I am logging into the console.'),
+      'Console Warn':           () => console.warn('I am logging warning into the console.'),
+      'Console Error':          () => console.error('I am logging error into the console.'),
+      'Console Count':          () => console.count('Clicked'),
+      'Console Assert':         () => {
+                                      let x,y;
+                                      console.assert(x > y, {x:5, y:6, reason:'x not larger'})},
+      'Console Clear':          () => console.clear(),
+      'Console Dir':            () => console.dir(clickFunctions),
+      'Console dirxml':         () => console.dirxml(document),
+      'Console Group Start':    () => {console.group('Collapsable items'), console.info('Starting collabsable items below')},
+      'Console Group End':      () => console.groupEnd('Console Group Start'),
+      'Console Table':          () => console.table(
+        [
+          {course: 'CSE 100', title: 'Advanced Data Structures', material: 'High-performance data structures and supporting algorithms.\n Use and implementation of data structures like (un)balanced trees, graphs, priority queues, and hash tables.\n Also memory management, pointers, recursion. Theoretical and practical performance analysis, both average case and amortized. Uses C++ and STL. '},
+          {course: 'CSE 110', title: 'Software Engineering', material: 'Introduction to software development and engineering methods, including specification, design, implementation, testing, and process. \nAn emphasis on team development, agile methods, and use of tools such as IDE’s, version control, and test harnesses.'},
+          {course: 'CSE 120', title: 'Principles of Computer Operating Systems', material: 'Basic functions of operating systems; basic kernel structure, concurrency, memory management, virtual memory, file systems, process scheduling, security and protection.'},
+          {course: 'CSE 123', title: 'Computer Networks', material: 'Introduction to concepts, principles, and practice of computer communication networks with examples from existing architectures, protocols, and standards with special emphasis on the internet protocols.\n Layering and the OSI model; physical and data link layers; local and wide area networks; datagrams and virtual circuits; routing and congestion control; internetworking. Transport protocols.'},
+          {course: 'CSE 124', title: 'Networked Services', material: 'The architecture of modern networked services, including data center design, enterprise storage, fault tolerance, and load balancing.\n Protocol software structuring, the Transmission Control Protocol (TCP), remote procedure calls, protocols for digital audio and video communication, overlay and peer-to-peer systems, secure communication.'},
+        ]),
+      'Start Timer':            () => console.time(),
+      'End Timer':              () => console.timeEnd(),
+      'Console Trace':          () => {
+                                        let level1 = () => {level2();};
+                                        let level2 = () => {level3();};
+                                        let level3 = () => {console.trace();};
+                                        level1();
+                                      },
+      'Trigger a Global Error': () => aintGonnaWork()
+    }
+
+    for (const button of errorBtns) {
+      button.addEventListener('click', clickFunctions[button.innerText]);
+    }
+
+    function calculate(firstNum, operator, secondNum) {
+      // Try/Catch
+      try {
+        validateNumericInput(firstNum);
+        validateNumericInput(secondNum);
+        return eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
+
+    // Throw
+    function validateNumericInput(input) {
+      if (isNaN(input)) {
+        throw new ValidationError(`Invalid input: ${input}`);
+      }
+    }
+
+    // Custom Error
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'ValidationError';
+      }
+    }
+
+    // Global Error Handler
+    window.addEventListener('error', e => {
+      console.warn(`Global Error Handler: ${e.message}`);
+    });
   </script>
 </body>
 
